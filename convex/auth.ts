@@ -40,6 +40,7 @@ export const createAuth = (
             clientSecret: process.env.HACKCLUB_CLIENT_SECRET!,
             discoveryUrl:
               "https://auth.hackclub.com/.well-known/openid-configuration",
+            scopes: ["openid", "profile", "email", "name", "slack_id"],
           },
         ],
       }),
