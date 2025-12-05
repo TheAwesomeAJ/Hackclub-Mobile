@@ -3,6 +3,7 @@ import { convexClient } from "@convex-dev/better-auth/client/plugins";
 import { expoClient } from "@better-auth/expo/client";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
+import { genericOAuthClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   baseURL: process.env.EXPO_PUBLIC_CONVEX_SITE_URL,
@@ -13,5 +14,6 @@ export const authClient = createAuthClient({
       storage: SecureStore,
     }),
     convexClient(),
+    genericOAuthClient(),
   ],
 });
