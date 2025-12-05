@@ -21,7 +21,7 @@ export const createAuth = (
     logger: {
       disabled: optionsOnly,
     },
-    trustedOrigins: ["hackclubmobile://", "exp://*/*"],
+    trustedOrigins: ["hackclubmobile://", "exp://*/*", ""],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started
     emailAndPassword: {
