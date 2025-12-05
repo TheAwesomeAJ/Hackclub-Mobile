@@ -1,5 +1,6 @@
+import { authClient } from "@/lib/auth-client";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
 export default function Index() {
   return (
@@ -15,6 +16,15 @@ export default function Index() {
       </AuthLoading>
       <Unauthenticated>
         <Text>Unauthenticated</Text>
+        <Button
+          title="Login"
+          onPress={() => {
+            authClient.signIn.oauth2({
+              providerId: "hackclub",
+              callbackURL: "/",
+            });
+          }}
+        />
       </Unauthenticated>
       <Authenticated>
         <Text>Authenticated</Text>
