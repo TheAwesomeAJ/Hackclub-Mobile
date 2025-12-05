@@ -1,8 +1,16 @@
+import { api } from "@/convex/_generated/api";
 import { authClient } from "@/lib/auth-client";
-import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
+import {
+  Authenticated,
+  AuthLoading,
+  Unauthenticated,
+  useQuery,
+} from "convex/react";
 import { Button, Text, View } from "react-native";
 
 export default function Index() {
+  const user = useQuery(api.auth.getCurrentUser);
+
   return (
     <View
       style={{
@@ -28,6 +36,12 @@ export default function Index() {
       </Unauthenticated>
       <Authenticated>
         <Text>Authenticated</Text>
+        {user && (
+          <Text>
+            {user.name} ({user.email})
+          </Text>
+        )}
+
         <Button title="Logout" onPress={() => authClient.signOut()} />
       </Authenticated>
     </View>
