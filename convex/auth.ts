@@ -5,6 +5,7 @@ import { expo } from "@better-auth/expo";
 import { components } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
+import { genericOAuth } from "better-auth/plugins";
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
@@ -31,6 +32,17 @@ export const createAuth = (
       // The Expo and Convex plugins are required
       expo(),
       convex(),
+      genericOAuth({
+        config: [
+          {
+            providerId: "hackclub",
+            clientId: process.env.HACKCLUB_CLIENT_ID!,
+            clientSecret: process.env.HACKCLUB_CLIENT_SECRET!,
+            discoveryUrl:
+              "https://auth.hackclub.com/.well-known/openid-configuration",
+          },
+        ],
+      }),
     ],
   });
 };
