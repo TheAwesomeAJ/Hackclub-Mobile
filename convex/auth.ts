@@ -21,6 +21,7 @@ export const createAuth = (
     logger: {
       disabled: optionsOnly,
     },
+    // It doesnt work unless there is a blank string for some reason future me problem
     trustedOrigins: ["hackclubmobile://", "exp://*/*", ""],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started
