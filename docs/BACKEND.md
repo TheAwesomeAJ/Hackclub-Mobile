@@ -1,5 +1,5 @@
 # Backend 
-Auth is handled using better-auth and backend is handled by convex. Convex 
+Auth is handled using better-auth and backend is handled by convex.
 The better-auth api runs on convex api routes, and was set up following [this guide](https://convex-better-auth.netlify.app/framework-guides/expo).
 ## Development Setup
 ### Run convex dev command to set up locally or cloud
