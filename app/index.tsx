@@ -28,6 +28,7 @@ export default function Index() {
       </Unauthenticated>
       <Authenticated>
         <Text>Authenticated</Text>
+        <Button title="Logout" onPress={() => authClient.signOut()} />
       </Authenticated>
     </View>
   );
