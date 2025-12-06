@@ -58,7 +58,7 @@ export const createAuth = (
         slackId: {
           type: "string",
           required: false,
-          defaultValue: "",
+          defaultValue: null,
           input: false,
         },
       },
