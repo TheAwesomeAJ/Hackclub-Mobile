@@ -51,7 +51,7 @@ export const createAuth = (
             scopes: ["openid", "profile", "email", "name", "slack_id"],
             mapProfileToUser: async (profile) => {
               return {
-                name: profile.given_name,
+                name: profile.name,
                 email: profile.email,
                 emailVerified: profile.email_verified,
                 id: profile.sub,
