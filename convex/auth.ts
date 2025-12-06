@@ -53,6 +53,16 @@ export const createAuth = (
         ],
       }),
     ],
+    user: {
+      additionalFields: {
+        slackId: {
+          type: "string",
+          required: false,
+          defaultValue: "",
+          input: false,
+        },
+      },
+    },
   });
 };
 
