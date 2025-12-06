@@ -36,6 +36,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   emailVerified: boolean;
                   image?: null | string;
                   name: string;
+                  slackId?: null | string;
                   updatedAt: number;
                   userId?: null | string;
                 };
@@ -111,6 +112,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "userId"
+                    | "slackId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -294,6 +296,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "userId"
+                    | "slackId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -541,6 +544,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   emailVerified?: boolean;
                   image?: null | string;
                   name?: string;
+                  slackId?: null | string;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -554,6 +558,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "userId"
+                    | "slackId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -768,6 +773,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   emailVerified?: boolean;
                   image?: null | string;
                   name?: string;
+                  slackId?: null | string;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -781,6 +787,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "userId"
+                    | "slackId"
                     | "_id";
                   operator?:
                     | "lt"
