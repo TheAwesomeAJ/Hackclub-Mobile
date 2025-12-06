@@ -49,6 +49,7 @@ export const createAuth = (
             discoveryUrl:
               "https://auth.hackclub.com/.well-known/openid-configuration",
             scopes: ["openid", "profile", "email", "name", "slack_id"],
+            overrideUserInfo: true,
             mapProfileToUser: async (profile) => {
               return {
                 name: profile.name,
