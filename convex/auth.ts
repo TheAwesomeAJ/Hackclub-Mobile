@@ -6,10 +6,18 @@ import { components } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import { genericOAuth } from "better-auth/plugins";
+import authSchema from "./betterAuth/schema";
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
-export const authComponent = createClient<DataModel>(components.betterAuth);
+export const authComponent = createClient<DataModel, typeof authSchema>(
+  components.betterAuth,
+  {
+    local: {
+      schema: authSchema,
+    },
+  },
+);
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
@@ -41,10 +49,30 @@ export const createAuth = (
             discoveryUrl:
               "https://auth.hackclub.com/.well-known/openid-configuration",
             scopes: ["openid", "profile", "email", "name", "slack_id"],
+            overrideUserInfo: true,
+            mapProfileToUser: async (profile) => {
+              return {
+                name: profile.name,
+                email: profile.email,
+                emailVerified: profile.email_verified,
+                id: profile.sub,
+                slackId: profile.slack_id,
+              };
+            },
           },
         ],
       }),
     ],
+    user: {
+      additionalFields: {
+        slackId: {
+          type: "string",
+          required: false,
+          defaultValue: null,
+          input: false,
+        },
+      },
+    },
   });
 };
 
