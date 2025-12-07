@@ -38,7 +38,7 @@ export default function Index() {
         <Text>Authenticated</Text>
         {user && (
           <Text>
-            {user.name} ({user.email})
+            {user.name} ({user.email} - {user.slackId})
           </Text>
         )}
 
