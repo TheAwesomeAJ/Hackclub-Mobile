@@ -7,8 +7,9 @@ import {
   Unauthenticated,
   useQuery,
 } from "convex/react";
-import { Button, useColorScheme, View } from "react-native";
-import Text from "@/components/Text";
+
+import { router } from "expo-router";
+import { Button, Text, useColorScheme, View } from "react-native";
 
 export default function Index() {
   const colorScheme = useColorScheme();
@@ -39,6 +40,13 @@ export default function Index() {
             });
           }}
         />
+        <View style={{ marginTop: 20 }}>
+          <Button
+            title="View Hackatime UI (Dev Bypass)"
+            onPress={() => router.push("/hackatime")}
+            color="orange"
+          />
+        </View>
       </Unauthenticated>
       <Authenticated>
         <Text>Authenticated</Text>
@@ -49,6 +57,12 @@ export default function Index() {
         )}
 
         <Button title="Logout" onPress={() => authClient.signOut()} />
+        <View style={{ marginTop: 20 }}>
+          <Button
+            title="Go to Hackatime"
+            onPress={() => router.push("/hackatime")}
+          />
+        </View>
       </Authenticated>
     </View>
   );
