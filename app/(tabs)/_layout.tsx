@@ -1,7 +1,11 @@
+import { Colors } from "@/constants/colors";
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
-import { Text } from "react-native";
+import { Text, useColorScheme } from "react-native";
 
 export default function Layout() {
+  const colorScheme = useColorScheme();
+  const themeColors = Colors[colorScheme || "dark"];
+
   const tabs: {
     name: string;
     href: React.ComponentProps<typeof TabTrigger>["href"];
@@ -32,7 +36,7 @@ export default function Layout() {
   return (
     <Tabs>
       <TabSlot />
-      <TabList>
+      <TabList style={{ backgroundColor: themeColors.background }}>
         {tabs.map((tab) => (
           <TabTrigger
             style={{
@@ -46,7 +50,7 @@ export default function Layout() {
             name={tab.name}
             href={tab.href}
           >
-            <Text>{tab.label}</Text>
+            <Text style={{ color: themeColors.foreground }}>{tab.label}</Text>
           </TabTrigger>
         ))}
       </TabList>
