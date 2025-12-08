@@ -1,6 +1,12 @@
 import { Colors } from "@/constants/colors";
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
-import { CalendarDays, Clock, Home, List } from "lucide-react-native";
+import {
+  CalendarDays,
+  Clock,
+  Home,
+  LayoutGrid,
+  List,
+} from "lucide-react-native";
 import { Text, useColorScheme } from "react-native";
 
 export default function Layout() {
@@ -30,6 +36,12 @@ export default function Layout() {
       href: "/events",
       label: "Events",
       icon: CalendarDays,
+    },
+    {
+      name: "toolbox",
+      href: "/toolbox",
+      label: "Toolbox",
+      icon: LayoutGrid,
     },
     {
       name: "more",
