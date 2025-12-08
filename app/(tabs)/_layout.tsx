@@ -35,7 +35,13 @@ export default function Layout() {
       <TabList>
         {tabs.map((tab) => (
           <TabTrigger
-            style={{ padding: 10 }}
+            style={{
+              padding: 10,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
             key={tab.name}
             name={tab.name}
             href={tab.href}
