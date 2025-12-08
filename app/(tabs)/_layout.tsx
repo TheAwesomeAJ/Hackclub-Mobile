@@ -2,22 +2,42 @@ import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
 import { Text } from "react-native";
 
 export default function Layout() {
+  const tabs: {
+    name: string;
+    href: React.ComponentProps<typeof TabTrigger>["href"];
+    label: string;
+  }[] = [
+    {
+      name: "home",
+      href: "/",
+      label: "Home",
+    },
+    {
+      name: "hackatime",
+      href: "/hackatime",
+      label: "Hackatime",
+    },
+    {
+      name: "events",
+      href: "/events",
+      label: "Events",
+    },
+    {
+      name: "more",
+      href: "/more",
+      label: "More",
+    },
+  ];
+
   return (
     <Tabs>
       <TabSlot />
       <TabList>
-        <TabTrigger name="home" href="/">
-          <Text>Home</Text>
-        </TabTrigger>
-        <TabTrigger name="hackatime" href="/hackatime">
-          <Text>Hackatime</Text>
-        </TabTrigger>
-        <TabTrigger name="events" href="/events">
-          <Text>Events</Text>
-        </TabTrigger>
-        <TabTrigger name="more" href="/more">
-          <Text>More</Text>
-        </TabTrigger>
+        {tabs.map((tab) => (
+          <TabTrigger key={tab.name} name={tab.name} href={tab.href}>
+            <Text>{tab.label}</Text>
+          </TabTrigger>
+        ))}
       </TabList>
     </Tabs>
   );
