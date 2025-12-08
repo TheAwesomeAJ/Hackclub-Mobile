@@ -7,7 +7,8 @@ import {
   Unauthenticated,
   useQuery,
 } from "convex/react";
-import { Button, Text, useColorScheme, View } from "react-native";
+import { Button, useColorScheme, View } from "react-native";
+import Text from "@/components/Text";
 
 export default function Index() {
   const colorScheme = useColorScheme();
