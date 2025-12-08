@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/colors";
 import { api } from "@/convex/_generated/api";
 import { authClient } from "@/lib/auth-client";
 import {
@@ -6,9 +7,12 @@ import {
   Unauthenticated,
   useQuery,
 } from "convex/react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, useColorScheme, View } from "react-native";
 
 export default function Index() {
+  const colorScheme = useColorScheme();
+  const themeColors = Colors[colorScheme || "dark"];
+
   const user = useQuery(api.auth.getCurrentUser);
 
   return (
@@ -17,6 +21,7 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: themeColors.background,
       }}
     >
       <AuthLoading>
