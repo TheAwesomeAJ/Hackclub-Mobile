@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/colors";
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
+import { Home } from "lucide-react-native";
 import { Text, useColorScheme } from "react-native";
 
 export default function Layout() {
@@ -10,26 +11,31 @@ export default function Layout() {
     name: string;
     href: React.ComponentProps<typeof TabTrigger>["href"];
     label: string;
+    icon: React.ComponentType<any>;
   }[] = [
     {
       name: "home",
       href: "/",
       label: "Home",
+      icon: Home,
     },
     {
       name: "hackatime",
       href: "/hackatime",
       label: "Hackatime",
+      icon: Home,
     },
     {
       name: "events",
       href: "/events",
       label: "Events",
+      icon: Home,
     },
     {
       name: "more",
       href: "/more",
       label: "More",
+      icon: Home,
     },
   ];
 
@@ -50,6 +56,7 @@ export default function Layout() {
             name={tab.name}
             href={tab.href}
           >
+            <tab.icon size={24} color={themeColors.foreground} />
             <Text style={{ color: themeColors.foreground }}>{tab.label}</Text>
           </TabTrigger>
         ))}
