@@ -34,7 +34,12 @@ export default function Layout() {
       <TabSlot />
       <TabList>
         {tabs.map((tab) => (
-          <TabTrigger key={tab.name} name={tab.name} href={tab.href}>
+          <TabTrigger
+            style={{ padding: 10 }}
+            key={tab.name}
+            name={tab.name}
+            href={tab.href}
+          >
             <Text>{tab.label}</Text>
           </TabTrigger>
         ))}
