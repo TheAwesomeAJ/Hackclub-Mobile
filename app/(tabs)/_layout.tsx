@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/colors";
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
-import { Home } from "lucide-react-native";
+import { CalendarDays, Clock, Home, List } from "lucide-react-native";
 import { Text, useColorScheme } from "react-native";
 
 export default function Layout() {
@@ -23,19 +23,19 @@ export default function Layout() {
       name: "hackatime",
       href: "/hackatime",
       label: "Hackatime",
-      icon: Home,
+      icon: Clock,
     },
     {
       name: "events",
       href: "/events",
       label: "Events",
-      icon: Home,
+      icon: CalendarDays,
     },
     {
       name: "more",
       href: "/more",
       label: "More",
-      icon: Home,
+      icon: List,
     },
   ];
 
