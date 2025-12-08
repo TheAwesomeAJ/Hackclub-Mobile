@@ -14,7 +14,7 @@ const convex = new ConvexReactClient(
 export default function RootLayout() {
   return (
     <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }} />
     </ConvexBetterAuthProvider>
   );
 }
