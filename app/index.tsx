@@ -8,7 +8,7 @@ import {
   useQuery,
 } from "convex/react";
 import { router } from "expo-router";
-import { Button, useColorScheme, View,Text } from "react-native";
+import { Button, useColorScheme, View } from "react-native";
 import Text from "@/components/Text";
 
 export default function Index() {
