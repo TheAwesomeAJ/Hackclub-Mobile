@@ -63,13 +63,16 @@ export default function Layout() {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              gap: 6,
             }}
             key={tab.name}
             name={tab.name}
             href={tab.href}
           >
             <tab.icon size={24} color={themeColors.foreground} />
-            <Text style={{ color: themeColors.foreground }}>{tab.label}</Text>
+            <Text style={{ color: themeColors.foreground, fontSize: 12 }}>
+              {tab.label}
+            </Text>
           </TabTrigger>
         ))}
       </TabList>
