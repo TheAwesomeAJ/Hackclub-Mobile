@@ -7,9 +7,11 @@ import {
   Unauthenticated,
   useQuery,
 } from "convex/react";
-
 import { router } from "expo-router";
+
 import { Button, Text, useColorScheme, View } from "react-native";
+;
+
 
 export default function Index() {
   const colorScheme = useColorScheme();
