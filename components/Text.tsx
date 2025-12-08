@@ -6,7 +6,7 @@ export default function Text(props: React.ComponentProps<typeof RnText>) {
   const themeColors = Colors[colorScheme || "dark"];
 
   return (
-    <RnText style={[{ color: themeColors.foreground }, props.style]}>
+    <RnText {...props} style={[{ color: themeColors.foreground }, props.style]}>
       {props.children}
     </RnText>
   );
