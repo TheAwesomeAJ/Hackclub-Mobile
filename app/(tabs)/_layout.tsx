@@ -22,6 +22,8 @@ export default function TabLayout() {
           borderTopColor: themeColors.border,
           borderTopWidth: 1,
         },
+        tabBarActiveTintColor: themeColors.primary,
+        tabBarInactiveTintColor: themeColors.ring,
       }}
     >
       <Tabs.Screen
