@@ -3,6 +3,8 @@ import { ConvexReactClient } from "convex/react";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import { authClient } from "@/lib/auth-client";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useColorScheme } from "react-native";
+import { Colors } from "@/constants/colors";
 const convex = new ConvexReactClient(
   process.env.EXPO_PUBLIC_CONVEX_URL as string,
   {
@@ -13,10 +15,18 @@ const convex = new ConvexReactClient(
 );
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const themeColors = Colors[colorScheme || "dark"];
+
   return (
     <ConvexBetterAuthProvider client={convex} authClient={authClient}>
       <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: themeColors.background },
+          }}
+        />
       </SafeAreaProvider>
     </ConvexBetterAuthProvider>
   );
