@@ -20,6 +20,7 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: themeColors.background,
           borderTopWidth: 0,
+          position: "absolute",
         },
         tabBarActiveTintColor: themeColors.primary,
         tabBarInactiveTintColor: themeColors.ring,
