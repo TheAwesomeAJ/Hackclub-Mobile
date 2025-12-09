@@ -1,3 +1,4 @@
+import { HapticTab } from "@/components/tabs/HapticTab";
 import { Colors } from "@/constants/colors";
 import { Tabs } from "expo-router";
 import {
@@ -24,6 +25,7 @@ export default function TabLayout() {
         },
         tabBarActiveTintColor: themeColors.primary,
         tabBarInactiveTintColor: themeColors.ring,
+        tabBarButton: HapticTab,
       }}
     >
       <Tabs.Screen
