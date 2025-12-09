@@ -23,6 +23,9 @@ export default function TabLayout() {
           borderTopWidth: 0,
           position: "absolute",
         },
+        sceneStyle: {
+          backgroundColor: themeColors.background,
+        },
         tabBarActiveTintColor: themeColors.primary,
         tabBarInactiveTintColor: themeColors.ring,
         tabBarButton: HapticTab,
