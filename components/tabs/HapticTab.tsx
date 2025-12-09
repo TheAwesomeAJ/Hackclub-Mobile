@@ -11,6 +11,10 @@ export function HapticTab(props: BottomTabBarButtonProps) {
         impactAsync(Haptics.ImpactFeedbackStyle.Light);
         props.onPressIn?.(ev);
       }}
+      android_ripple={{
+        foreground: true,
+      }}
+      pressOpacity={0.5}
     />
   );
 }
