@@ -9,10 +9,8 @@ import {
 } from "convex/react";
 import { router } from "expo-router";
 
-import { Button, Text, useColorScheme, View } from "react-native";
-;
-
-
+import Text from "@/components/Text";
+import { Button, useColorScheme, View } from "react-native";
 export default function Index() {
   const colorScheme = useColorScheme();
   const themeColors = Colors[colorScheme || "dark"];
