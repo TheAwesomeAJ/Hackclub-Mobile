@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/colors";
-import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
+import { Tabs } from "expo-router";
 import {
   CalendarDays,
   Clock,
@@ -7,78 +7,53 @@ import {
   LayoutGrid,
   List,
 } from "lucide-react-native";
-import { Text, useColorScheme } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useColorScheme } from "react-native";
 
-export default function Layout() {
+export default function TabLayout() {
   const colorScheme = useColorScheme();
   const themeColors = Colors[colorScheme || "dark"];
 
-  const tabs: {
-    name: string;
-    href: React.ComponentProps<typeof TabTrigger>["href"];
-    label: string;
-    icon: React.ComponentType<any>;
-  }[] = [
-    {
-      name: "home",
-      href: "/",
-      label: "Home",
-      icon: Home,
-    },
-    {
-      name: "hackatime",
-      href: "/hackatime",
-      label: "Hackatime",
-      icon: Clock,
-    },
-    {
-      name: "events",
-      href: "/events",
-      label: "Events",
-      icon: CalendarDays,
-    },
-    {
-      name: "toolbox",
-      href: "/toolbox",
-      label: "Toolbox",
-      icon: LayoutGrid,
-    },
-    {
-      name: "more",
-      href: "/more",
-      label: "More",
-      icon: List,
-    },
-  ];
-
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.background }}>
-      <Tabs>
-        <TabSlot />
-        <TabList style={{ backgroundColor: themeColors.background }}>
-          {tabs.map((tab) => (
-            <TabTrigger
-              style={{
-                padding: 10,
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: 6,
-              }}
-              key={tab.name}
-              name={tab.name}
-              href={tab.href}
-            >
-              <tab.icon size={24} color={themeColors.foreground} />
-              <Text style={{ color: themeColors.foreground, fontSize: 12 }}>
-                {tab.label}
-              </Text>
-            </TabTrigger>
-          ))}
-        </TabList>
-      </Tabs>
-    </SafeAreaView>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => <Home color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
+        name="hackatime"
+        options={{
+          title: "Hackatime",
+          tabBarIcon: ({ color }) => <Clock color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
+        name="events"
+        options={{
+          title: "Events",
+          tabBarIcon: ({ color }) => <CalendarDays color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
+        name="toolbox"
+        options={{
+          title: "Toolbox",
+          tabBarIcon: ({ color }) => <LayoutGrid color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
+        name="more"
+        options={{
+          title: "More",
+          tabBarIcon: ({ color }) => <List color={color} size={24} />,
+        }}
+      />
+    </Tabs>
   );
 }
