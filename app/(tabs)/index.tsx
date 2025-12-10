@@ -43,7 +43,7 @@ export default function Index() {
         <View style={{ marginTop: 20 }}>
           <Button
             title="View Hackatime UI (Dev Bypass)"
-            onPress={() => router.push("/features/hackatime")}
+            onPress={() => router.push("/hackatime")}
             color="orange"
           />
         </View>
@@ -60,7 +60,7 @@ export default function Index() {
         <View style={{ marginTop: 20 }}>
           <Button
             title="Go to Hackatime"
-            onPress={() => router.push("/features/hackatime")}
+            onPress={() => router.push("/hackatime")}
           />
         </View>
       </Authenticated>
