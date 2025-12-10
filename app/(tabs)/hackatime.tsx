@@ -208,7 +208,7 @@ export default function Index() {
       0,
       0,
       0,
-      0
+      0,
     ).toISOString();
 
   // Load cached data on mount
@@ -266,7 +266,7 @@ export default function Index() {
 
       try {
         const response = await fetch(
-          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`
+          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`,
         );
 
         if (response.ok) {
@@ -336,7 +336,7 @@ export default function Index() {
 
       try {
         const response = await fetch(
-          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`
+          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`,
         );
 
         if (response.ok) {
@@ -396,14 +396,14 @@ export default function Index() {
       const displayMonthStart = new Date(
         today.getFullYear(),
         today.getMonth() - i,
-        1
+        1,
       );
 
       // Calculate the last day of the target month (display date)
       const displayMonthEnd = new Date(
         today.getFullYear(),
         today.getMonth() - i + 1,
-        0
+        0,
       );
 
       // Use local month bounds converted to UTC ISO midnights
@@ -419,7 +419,7 @@ export default function Index() {
 
       try {
         const response = await fetch(
-          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`
+          `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${startDate}&end_date=${endDate}`,
         );
 
         if (response.ok) {
@@ -460,11 +460,11 @@ export default function Index() {
 
     try {
       const allTimeResponse = await fetch(
-        `https://hackatime.hackclub.com/api/v1/users/${id}/stats`
+        `https://hackatime.hackclub.com/api/v1/users/${id}/stats`,
       );
       if (!allTimeResponse.ok) {
         throw new Error(
-          `Failed to fetch all-time stats: ${allTimeResponse.status}`
+          `Failed to fetch all-time stats: ${allTimeResponse.status}`,
         );
       }
       const allTimeData: ApiResponse = await allTimeResponse.json();
@@ -479,11 +479,11 @@ export default function Index() {
       const tomorrowDate = toUtcIsoMidnight(tomorrow);
 
       const todayResponse = await fetch(
-        `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${todayDate}&end_date=${tomorrowDate}`
+        `https://hackatime.hackclub.com/api/v1/users/${id}/stats?start_date=${todayDate}&end_date=${tomorrowDate}`,
       );
       if (!todayResponse.ok) {
         throw new Error(
-          `Failed to fetch today's stats: ${todayResponse.status}`
+          `Failed to fetch today's stats: ${todayResponse.status}`,
         );
       }
       const todayData: ApiResponse = await todayResponse.json();
@@ -508,7 +508,7 @@ export default function Index() {
       setError(err instanceof Error ? err.message : "Failed to fetch stats");
       Alert.alert(
         "Error",
-        "Failed to fetch stats. Please check your Slack ID and try again."
+        "Failed to fetch stats. Please check your Slack ID and try again.",
       );
     } finally {
       setLoading(false);
