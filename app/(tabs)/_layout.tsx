@@ -53,10 +53,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="ysws_catlog"
+        options={{
+          title: "YSWS",
+          tabBarIcon: ({ color }) => <LayoutGrid color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
         name="toolbox"
         options={{
-          title: "Toolbox",
-          tabBarIcon: ({ color }) => <LayoutGrid color={color} size={24} />,
+          href: null,
         }}
       />
       <Tabs.Screen
