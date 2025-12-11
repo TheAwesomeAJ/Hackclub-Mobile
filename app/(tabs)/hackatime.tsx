@@ -625,6 +625,16 @@ export default function Index() {
     }
   }, [todayStats, weeklyData]);
 
+  if (!userInfo) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.centerContainer}>
+          <Text style={styles.title}>Not logged in</Text>
+        </View>
+      </View>
+    );
+  }
+
   if (loading) {
     return (
       <View style={styles.centerContainer}>
