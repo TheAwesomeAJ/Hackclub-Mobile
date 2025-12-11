@@ -192,9 +192,7 @@ interface ThreeMonthData {
 }
 
 export default function Index() {
-  const [slackId, setSlackId] = useState("");
   const [storedSlackId, setStoredSlackId] = useState<string | null>(null);
-  const [inputVisible, setInputVisible] = useState(false);
   const [allTimeStats, setAllTimeStats] = useState<StatsData | null>(null);
   const [todayStats, setTodayStats] = useState<StatsData | null>(null);
   const [weeklyData, setWeeklyData] = useState<WeeklyData[]>([]);
@@ -242,8 +240,6 @@ export default function Index() {
         // Fetch fresh data in background
         fetchStats(userInfo.slackId!);
       });
-    } else {
-      setInputVisible(true);
     }
   }, [userInfo?.slackId]);
 
@@ -521,7 +517,6 @@ export default function Index() {
   };
 
   const handleChangeId = () => {
-    setInputVisible(true);
     setAllTimeStats(null);
     setTodayStats(null);
     setWeeklyData([]);
