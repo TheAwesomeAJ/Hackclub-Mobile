@@ -215,24 +215,24 @@ export default function Index() {
       0,
     ).toISOString();
 
+  const loadCachedData = async () => {
+    try {
+      const cachedStats = await AsyncStorage.getItem("cachedStats");
+      if (cachedStats) {
+        const parsed = JSON.parse(cachedStats);
+        setAllTimeStats(parsed.allTimeStats);
+        setTodayStats(parsed.todayStats);
+        setWeeklyData(parsed.weeklyData || []);
+        setMonthlyData(parsed.monthlyData || []);
+        setThreeMonthData(parsed.threeMonthData || []);
+      }
+    } catch (err) {
+      console.error("Error loading cached data:", err);
+    }
+  };
+
   // Load cached data on mount
   useEffect(() => {
-    const loadCachedData = async () => {
-      try {
-        const cachedStats = await AsyncStorage.getItem("cachedStats");
-        if (cachedStats) {
-          const parsed = JSON.parse(cachedStats);
-          setAllTimeStats(parsed.allTimeStats);
-          setTodayStats(parsed.todayStats);
-          setWeeklyData(parsed.weeklyData || []);
-          setMonthlyData(parsed.monthlyData || []);
-          setThreeMonthData(parsed.threeMonthData || []);
-        }
-      } catch (err) {
-        console.error("Error loading cached data:", err);
-      }
-    };
-
     AsyncStorage.getItem("slackId").then((value) => {
       if (value) {
         setStoredSlackId(value);
