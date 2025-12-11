@@ -517,18 +517,6 @@ export default function Index() {
     }
   };
 
-  const handleSave = async () => {
-    if (!slackId.trim()) {
-      Alert.alert("Error", "Please enter a valid Slack ID");
-      return;
-    }
-
-    await AsyncStorage.setItem("slackId", slackId);
-    setStoredSlackId(slackId);
-    setInputVisible(false);
-    fetchStats(slackId);
-  };
-
   const handleChangeId = () => {
     setInputVisible(true);
     setAllTimeStats(null);
@@ -636,38 +624,6 @@ export default function Index() {
       const weekMinutes = Math.floor((weekSeconds % 3600) / 60);
     }
   }, [todayStats, weeklyData]);
-
-  if (inputVisible) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.centerContainer}>
-          <Text style={styles.title}>Hackatime</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Enter your Slack ID</Text>
-            <TextInput
-              value={slackId}
-              onChangeText={setSlackId}
-              placeholder="e.g. U12345678"
-              placeholderTextColor="#888"
-              style={styles.textInput}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <TouchableOpacity
-              style={[
-                styles.saveButton,
-                !slackId.trim() && styles.saveButtonDisabled,
-              ]}
-              onPress={handleSave}
-              disabled={!slackId.trim()}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
 
   if (loading) {
     return (
