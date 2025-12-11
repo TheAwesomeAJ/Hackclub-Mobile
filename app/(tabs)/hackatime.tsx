@@ -1,9 +1,13 @@
+import { api } from "@/convex/_generated/api";
+import { authClient } from "@/lib/auth-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "convex/react";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Button,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -188,9 +192,7 @@ interface ThreeMonthData {
 }
 
 export default function Index() {
-  const [slackId, setSlackId] = useState("");
   const [storedSlackId, setStoredSlackId] = useState<string | null>(null);
-  const [inputVisible, setInputVisible] = useState(false);
   const [allTimeStats, setAllTimeStats] = useState<StatsData | null>(null);
   const [todayStats, setTodayStats] = useState<StatsData | null>(null);
   const [weeklyData, setWeeklyData] = useState<WeeklyData[]>([]);
@@ -198,6 +200,9 @@ export default function Index() {
   const [threeMonthData, setThreeMonthData] = useState<ThreeMonthData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const session = authClient.useSession();
+  const userInfo = useQuery(api.auth.getCurrentUser);
 
   // Convert a local calendar day to a full UTC ISO timestamp at local midnight.
   const toUtcIsoMidnight = (date: Date) =>
@@ -211,36 +216,32 @@ export default function Index() {
       0,
     ).toISOString();
 
+  const loadCachedData = async () => {
+    try {
+      const cachedStats = await AsyncStorage.getItem("cachedStats");
+      if (cachedStats) {
+        const parsed = JSON.parse(cachedStats);
+        setAllTimeStats(parsed.allTimeStats);
+        setTodayStats(parsed.todayStats);
+        setWeeklyData(parsed.weeklyData || []);
+        setMonthlyData(parsed.monthlyData || []);
+        setThreeMonthData(parsed.threeMonthData || []);
+      }
+    } catch (err) {
+      console.error("Error loading cached data:", err);
+    }
+  };
+
   // Load cached data on mount
   useEffect(() => {
-    const loadCachedData = async () => {
-      try {
-        const cachedStats = await AsyncStorage.getItem("cachedStats");
-        if (cachedStats) {
-          const parsed = JSON.parse(cachedStats);
-          setAllTimeStats(parsed.allTimeStats);
-          setTodayStats(parsed.todayStats);
-          setWeeklyData(parsed.weeklyData || []);
-          setMonthlyData(parsed.monthlyData || []);
-          setThreeMonthData(parsed.threeMonthData || []);
-        }
-      } catch (err) {
-        console.error("Error loading cached data:", err);
-      }
-    };
-
-    AsyncStorage.getItem("slackId").then((value) => {
-      if (value) {
-        setStoredSlackId(value);
-        loadCachedData().then(() => {
-          // Fetch fresh data in background
-          fetchStats(value);
-        });
-      } else {
-        setInputVisible(true);
-      }
-    });
-  }, []);
+    if (userInfo?.slackId) {
+      setStoredSlackId(userInfo.slackId);
+      loadCachedData().then(() => {
+        // Fetch fresh data in background
+        fetchStats(userInfo.slackId!);
+      });
+    }
+  }, [userInfo?.slackId]);
 
   const fetchWeeklyStats = async (id: string) => {
     const weeklyData: WeeklyData[] = [];
@@ -515,20 +516,7 @@ export default function Index() {
     }
   };
 
-  const handleSave = async () => {
-    if (!slackId.trim()) {
-      Alert.alert("Error", "Please enter a valid Slack ID");
-      return;
-    }
-
-    await AsyncStorage.setItem("slackId", slackId);
-    setStoredSlackId(slackId);
-    setInputVisible(false);
-    fetchStats(slackId);
-  };
-
   const handleChangeId = () => {
-    setInputVisible(true);
     setAllTimeStats(null);
     setTodayStats(null);
     setWeeklyData([]);
@@ -635,43 +623,32 @@ export default function Index() {
     }
   }, [todayStats, weeklyData]);
 
-  if (inputVisible) {
+  if (!userInfo && !session.isPending) {
     return (
       <View style={styles.container}>
         <View style={styles.centerContainer}>
-          <Text style={styles.title}>Hackatime</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Enter your Slack ID</Text>
-            <TextInput
-              value={slackId}
-              onChangeText={setSlackId}
-              placeholder="e.g. U12345678"
-              placeholderTextColor="#888"
-              style={styles.textInput}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <TouchableOpacity
-              style={[
-                styles.saveButton,
-                !slackId.trim() && styles.saveButtonDisabled,
-              ]}
-              onPress={handleSave}
-              disabled={!slackId.trim()}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.title}>Not logged in</Text>
+          <Button
+            title="Login"
+            onPress={() => {
+              authClient.signIn.oauth2({
+                providerId: "hackclub",
+                callbackURL: "/hackatime",
+              });
+            }}
+          />
         </View>
       </View>
     );
   }
 
-  if (loading) {
+  if (loading || session.isPending) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#ff6b9d" />
-        <Text style={styles.loadingText}>Loading stats...</Text>
+        <Text style={styles.loadingText}>
+          {session.isPending ? "Logging in..." : "Loading stats..."}
+        </Text>
       </View>
     );
   }
