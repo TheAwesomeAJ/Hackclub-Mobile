@@ -203,6 +203,7 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const session = authClient.useSession();
   const userInfo = useQuery(api.auth.getCurrentUser);
 
   // Convert a local calendar day to a full UTC ISO timestamp at local midnight.
@@ -627,6 +628,15 @@ export default function Index() {
     }
   }, [todayStats, weeklyData]);
 
+  if (loading || session.isPending) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#ff6b9d" />
+        <Text style={styles.loadingText}>Loading stats...</Text>
+      </View>
+    );
+  }
+
   if (!userInfo) {
     return (
       <View style={styles.container}>
@@ -642,15 +652,6 @@ export default function Index() {
             }}
           />
         </View>
-      </View>
-    );
-  }
-
-  if (loading) {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#ff6b9d" />
-        <Text style={styles.loadingText}>Loading stats...</Text>
       </View>
     );
   }
