@@ -1,4 +1,6 @@
+import { api } from "@/convex/_generated/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "convex/react";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
@@ -198,6 +200,8 @@ export default function Index() {
   const [threeMonthData, setThreeMonthData] = useState<ThreeMonthData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const userInfo = useQuery(api.auth.getCurrentUser);
 
   // Convert a local calendar day to a full UTC ISO timestamp at local midnight.
   const toUtcIsoMidnight = (date: Date) =>
