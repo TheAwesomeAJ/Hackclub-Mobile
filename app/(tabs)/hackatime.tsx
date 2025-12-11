@@ -233,18 +233,16 @@ export default function Index() {
 
   // Load cached data on mount
   useEffect(() => {
-    AsyncStorage.getItem("slackId").then((value) => {
-      if (value) {
-        setStoredSlackId(value);
-        loadCachedData().then(() => {
-          // Fetch fresh data in background
-          fetchStats(value);
-        });
-      } else {
-        setInputVisible(true);
-      }
-    });
-  }, []);
+    if (userInfo?.slackId) {
+      setStoredSlackId(userInfo.slackId);
+      loadCachedData().then(() => {
+        // Fetch fresh data in background
+        fetchStats(userInfo.slackId!);
+      });
+    } else {
+      setInputVisible(true);
+    }
+  }, [userInfo?.slackId]);
 
   const fetchWeeklyStats = async (id: string) => {
     const weeklyData: WeeklyData[] = [];
