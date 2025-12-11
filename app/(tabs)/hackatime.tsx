@@ -1,4 +1,5 @@
 import { api } from "@/convex/_generated/api";
+import { authClient } from "@/lib/auth-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "convex/react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Button,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -630,6 +632,15 @@ export default function Index() {
       <View style={styles.container}>
         <View style={styles.centerContainer}>
           <Text style={styles.title}>Not logged in</Text>
+          <Button
+            title="Login"
+            onPress={() => {
+              authClient.signIn.oauth2({
+                providerId: "hackclub",
+                callbackURL: "/",
+              });
+            }}
+          />
         </View>
       </View>
     );
