@@ -651,7 +651,9 @@ export default function Index() {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#ff6b9d" />
-        <Text style={styles.loadingText}>Loading stats...</Text>
+        <Text style={styles.loadingText}>
+          {session.isPending ? "Logging in..." : "Loading stats..."}
+        </Text>
       </View>
     );
   }
