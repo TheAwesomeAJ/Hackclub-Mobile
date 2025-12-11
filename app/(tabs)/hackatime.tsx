@@ -647,7 +647,7 @@ export default function Index() {
             onPress={() => {
               authClient.signIn.oauth2({
                 providerId: "hackclub",
-                callbackURL: "/",
+                callbackURL: "/hackatime",
               });
             }}
           />
