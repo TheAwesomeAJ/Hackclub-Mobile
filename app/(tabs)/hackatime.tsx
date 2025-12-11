@@ -628,16 +628,7 @@ export default function Index() {
     }
   }, [todayStats, weeklyData]);
 
-  if (loading || session.isPending) {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#ff6b9d" />
-        <Text style={styles.loadingText}>Loading stats...</Text>
-      </View>
-    );
-  }
-
-  if (!userInfo) {
+  if (!userInfo && !session.isPending) {
     return (
       <View style={styles.container}>
         <View style={styles.centerContainer}>
@@ -652,6 +643,15 @@ export default function Index() {
             }}
           />
         </View>
+      </View>
+    );
+  }
+
+  if (loading || session.isPending) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#ff6b9d" />
+        <Text style={styles.loadingText}>Loading stats...</Text>
       </View>
     );
   }
