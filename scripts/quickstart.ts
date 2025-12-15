@@ -1,6 +1,4 @@
 import { spawn } from "child_process";
-import readline from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
 
 function exec(executable: string, args: string[]) {
   console.log("> " + executable + " " + args.join(" "));
