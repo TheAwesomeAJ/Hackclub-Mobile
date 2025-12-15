@@ -97,6 +97,21 @@ async function addConvexSiteUrl() {
   console.log("Convex site URL added to .env.local");
 }
 
+async function authSetup() {
+  console.log(`Step 2: Setting up authentication
+Go to https://auth.hackclub.com/developer/apps and create a new app.
+
+Use the redirect URI: ${convexSiteUrl}/api/auth/oauth2/callback/hackclub
+
+Enable the following scopes:
+ - openid
+ - profile
+ - email
+ - name
+ - slack_id
+`);
+}
+
 (async () => {
   await checkEnvs();
   await convexSetup();
