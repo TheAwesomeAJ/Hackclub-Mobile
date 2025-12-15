@@ -127,6 +127,19 @@ Enable the following scopes:
       message: "Enter the Client Secret",
     },
   ]);
+
+  if (!clientId || !clientSecret) {
+    console.error("Client ID and Client Secret are required");
+    process.exit(1);
+  }
+
+  exec("bunx", ["convex", "env", "set", "HACKCLUB_CLIENT_ID=" + clientId]);
+  exec("bunx", [
+    "convex",
+    "env",
+    "set",
+    "HACKCLUB_CLIENT_SECRET=" + clientSecret,
+  ]);
 }
 
 (async () => {
