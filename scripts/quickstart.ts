@@ -94,6 +94,7 @@ async function addConvexSiteUrl() {
     path.resolve(process.cwd(), ".env.local"),
     `EXPO_PUBLIC_CONVEX_SITE_URL=${convexSiteUrl}\n`,
   );
+  console.log("Convex site URL added to .env.local");
 }
 
 (async () => {
