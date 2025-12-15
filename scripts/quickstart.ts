@@ -116,4 +116,5 @@ Enable the following scopes:
   await checkEnvs();
   await convexSetup();
   await addConvexSiteUrl();
+  await authSetup();
 })();
