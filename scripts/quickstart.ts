@@ -44,7 +44,7 @@ async function exec(executable: string, args: string[]) {
 }
 
 async function checkEnvs() {
-  if (fs.existsSync(".env.local") || fs.existsSync(".env")) {
+  if (fs.existsSync(".env.local")) {
     const { value } = await prompts({
       type: "confirm",
       name: "value",
@@ -52,8 +52,7 @@ async function checkEnvs() {
     });
     if (value === undefined) exit(1);
     if (value) {
-      if (fs.existsSync(".env.local")) await fsPromises.unlink(".env.local");
-      if (fs.existsSync(".env")) await fsPromises.unlink(".env");
+      await fsPromises.unlink(".env.local");
     }
   }
 }
