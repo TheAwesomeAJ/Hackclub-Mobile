@@ -7,6 +7,7 @@ import { exit } from "process";
 import dotenv from "dotenv";
 
 const envPath = path.resolve(process.cwd(), ".env.local");
+let convexUrl = "";
 
 async function confirm(text: string) {
   const { value } = await prompts({
@@ -67,6 +68,13 @@ We recommend using a cloud deployment, but local will work as well
 Follow the prompts from the Convex CLI`);
 
   await exec("bunx", ["convex", "dev", "--until-success"]);
+
+  const envVars = dotenv.parse(fs.readFileSync(envPath));
+  convexUrl = envVars.EXPO_PUBLIC_CONVEX_URL;
+  if (!convexUrl) {
+    console.error("Failed to retrieve Convex URL from environment variables");
+    process.exit(1);
+  }
 }
 
 (async () => {
