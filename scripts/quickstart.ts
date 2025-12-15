@@ -152,4 +152,8 @@ Enable the following scopes:
   await convexSetup();
   await addConvexSiteUrl();
   await authSetup();
+
+  console.log(
+    "Setup complete! Run the app with `pnpm start`, and `pnpx convex dev` in another terminal",
+  );
 })();
