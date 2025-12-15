@@ -90,11 +90,15 @@ async function addConvexSiteUrl() {
     process.exit(1);
   }
 
-  await fsPromises.appendFile(
-    path.resolve(process.cwd(), ".env.local"),
-    `EXPO_PUBLIC_CONVEX_SITE_URL=${convexSiteUrl}\n`,
-  );
-  console.log("Convex site URL added to .env.local");
+  const envVars = dotenv.parse(fs.readFileSync(envPath));
+
+  if (!envVars.EXPO_PUBLIC_CONVEX_SITE_URL) {
+    await fsPromises.appendFile(
+      path.resolve(process.cwd(), ".env.local"),
+      `EXPO_PUBLIC_CONVEX_SITE_URL=${convexSiteUrl}\n`,
+    );
+    console.log("Convex site URL added to .env.local");
+  }
 }
 
 async function authSetup() {
