@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { exit } from "process";
 import dotenv from "dotenv";
+import { randomBytes } from "crypto";
 
 const envPath = path.resolve(process.cwd(), ".env.local");
 let convexUrl = "";
@@ -147,11 +148,18 @@ Enable the following scopes:
   ]);
 }
 
+async function configureBetterAuthSecret() {
+  const secret = randomBytes(32).toString("base64");
+
+  await exec("bunx", ["convex", "env", "set", "BETTER_AUTH_SECRET=" + secret]);
+}
+
 (async () => {
   await checkEnvs();
   await convexSetup();
   await addConvexSiteUrl();
   await authSetup();
+  await configureBetterAuthSecret();
 
   console.log(
     "Setup complete! Run the app with `pnpm start`, and `pnpx convex dev` in another terminal",
