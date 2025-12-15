@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 
 const envPath = path.resolve(process.cwd(), ".env.local");
 let convexUrl = "";
+let convexSiteUrl = "";
 
 async function confirm(text: string) {
   const { value } = await prompts({
@@ -77,7 +78,26 @@ Follow the prompts from the Convex CLI`);
   }
 }
 
+async function addConvexSiteUrl() {
+  if (convexUrl.endsWith(".convex.cloud")) {
+    console.log("Convex cloud deployment detected");
+    convexSiteUrl = convexUrl.replace(".convex.cloud", ".convex.site");
+  } else if (convexUrl.endsWith(":3210")) {
+    console.log("Convex local deployment detected");
+    convexSiteUrl = convexUrl.replace(":3210", ":3211");
+  } else {
+    console.error("Unsupported Convex deployment type");
+    process.exit(1);
+  }
+
+  await fsPromises.appendFile(
+    path.resolve(process.cwd(), ".env.local"),
+    `EXPO_PUBLIC_CONVEX_SITE_URL=${convexSiteUrl}\n`,
+  );
+}
+
 (async () => {
   await checkEnvs();
   await convexSetup();
+  await addConvexSiteUrl();
 })();
