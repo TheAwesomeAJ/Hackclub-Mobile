@@ -133,8 +133,13 @@ Enable the following scopes:
     process.exit(1);
   }
 
-  exec("bunx", ["convex", "env", "set", "HACKCLUB_CLIENT_ID=" + clientId]);
-  exec("bunx", [
+  await exec("bunx", [
+    "convex",
+    "env",
+    "set",
+    "HACKCLUB_CLIENT_ID=" + clientId,
+  ]);
+  await exec("bunx", [
     "convex",
     "env",
     "set",
