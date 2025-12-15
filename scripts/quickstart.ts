@@ -114,6 +114,19 @@ Enable the following scopes:
  - name
  - slack_id
 `);
+
+  const { clientId, clientSecret } = await prompts([
+    {
+      type: "text",
+      name: "clientId",
+      message: "Enter the Client ID",
+    },
+    {
+      type: "text",
+      name: "clientSecret",
+      message: "Enter the Client Secret",
+    },
+  ]);
 }
 
 (async () => {
