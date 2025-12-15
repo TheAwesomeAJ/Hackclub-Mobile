@@ -2,7 +2,11 @@ import { spawn } from "child_process";
 import prompts from "prompts";
 import fsPromises from "fs/promises";
 import fs from "fs";
+import path from "path";
 import { exit } from "process";
+import dotenv from "dotenv";
+
+const envPath = path.resolve(process.cwd(), ".env.local");
 
 async function confirm(text: string) {
   const { value } = await prompts({
@@ -44,7 +48,7 @@ async function exec(executable: string, args: string[]) {
 }
 
 async function checkEnvs() {
-  if (fs.existsSync(".env.local")) {
+  if (fs.existsSync(envPath)) {
     const { value } = await prompts({
       type: "confirm",
       name: "value",
@@ -52,7 +56,7 @@ async function checkEnvs() {
     });
     if (value === undefined) exit(1);
     if (value) {
-      await fsPromises.unlink(".env.local");
+      await fsPromises.unlink(envPath);
     }
   }
 }
