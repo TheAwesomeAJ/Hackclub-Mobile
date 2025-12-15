@@ -1,7 +1,26 @@
 import { spawn } from "child_process";
+import prompts from "prompts";
 
-function exec(executable: string, args: string[]) {
+async function confirm(text: string) {
+  const { value } = await prompts({
+    type: "toggle",
+    name: "value",
+    message: text,
+    initial: true,
+    inactive: "Exit",
+    active: "Continue",
+  });
+  if (!value) {
+    console.log("Cancelled");
+    process.exit(1);
+  }
+}
+
+async function exec(executable: string, args: string[]) {
   console.log("> " + executable + " " + args.join(" "));
+
+  await confirm("Continue?");
+
   return new Promise<void>((resolve, reject) => {
     const process = spawn(executable, args, {
       stdio: "inherit",
