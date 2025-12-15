@@ -1,5 +1,8 @@
 import { spawn } from "child_process";
 import prompts from "prompts";
+import fsPromises from "fs/promises";
+import fs from "fs";
+import { exit } from "process";
 
 async function confirm(text: string) {
   const { value } = await prompts({
@@ -40,10 +43,30 @@ async function exec(executable: string, args: string[]) {
   });
 }
 
-(async () => {
+async function checkEnvs() {
+  if (fs.existsSync(".env.local") || fs.existsSync(".env")) {
+    const { value } = await prompts({
+      type: "confirm",
+      name: "value",
+      message: "Environment variables already exist. Delete?",
+    });
+    if (value === undefined) exit(1);
+    if (value) {
+      if (fs.existsSync(".env.local")) await fsPromises.unlink(".env.local");
+      if (fs.existsSync(".env")) await fsPromises.unlink(".env");
+    }
+  }
+}
+
+async function convexSetup() {
   console.log(`Step 1: Setting up convex
 We recommend using a cloud deployment, but local will work as well
 Follow the prompts from the Convex CLI`);
 
   await exec("bunx", ["convex", "dev", "--until-success"]);
+}
+
+(async () => {
+  await checkEnvs();
+  await convexSetup();
 })();
