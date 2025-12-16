@@ -66,7 +66,7 @@ async function checkEnvs() {
 
 async function convexSetup() {
   console.log(`Step 1: Setting up convex
-We recommend using a cloud deployment, but local will work as well
+You have to use a cloud deployment
 Follow the prompts from the Convex CLI`);
 
   await exec("pnpx", ["convex", "dev", "--until-success"]);
@@ -83,9 +83,6 @@ async function addConvexSiteUrl() {
   if (convexUrl.endsWith(".convex.cloud")) {
     console.log("Convex cloud deployment detected");
     convexSiteUrl = convexUrl.replace(".convex.cloud", ".convex.site");
-  } else if (convexUrl.endsWith(":3210")) {
-    console.log("Convex local deployment detected");
-    convexSiteUrl = convexUrl.replace(":3210", ":3211");
   } else {
     console.error("Unsupported Convex deployment type");
     process.exit(1);
@@ -115,17 +112,6 @@ Enable the following scopes:
  - name
  - slack_id
 `);
-
-  if (convexUrl.endsWith(":3210")) {
-    await prompts([
-      {
-        type: "invisible",
-        name: "continue",
-        message:
-          "Open a new terminal, run pnpx convex dev, wait a bit, then press enter here",
-      },
-    ]);
-  }
 
   const { clientId, clientSecret } = await prompts([
     {
