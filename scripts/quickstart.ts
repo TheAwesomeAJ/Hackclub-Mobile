@@ -69,7 +69,7 @@ async function convexSetup() {
 We recommend using a cloud deployment, but local will work as well
 Follow the prompts from the Convex CLI`);
 
-  await exec("bunx", ["convex", "dev", "--until-success"]);
+  await exec("pnpx", ["convex", "dev", "--until-success"]);
 
   const envVars = dotenv.parse(fs.readFileSync(envPath));
   convexUrl = envVars.EXPO_PUBLIC_CONVEX_URL;
@@ -134,13 +134,13 @@ Enable the following scopes:
     process.exit(1);
   }
 
-  await exec("bunx", [
+  await exec("pnpx", [
     "convex",
     "env",
     "set",
     "HACKCLUB_CLIENT_ID=" + clientId,
   ]);
-  await exec("bunx", [
+  await exec("pnpx", [
     "convex",
     "env",
     "set",
@@ -151,7 +151,7 @@ Enable the following scopes:
 async function configureBetterAuthSecret() {
   const secret = randomBytes(32).toString("base64");
 
-  await exec("bunx", ["convex", "env", "set", "BETTER_AUTH_SECRET=" + secret]);
+  await exec("pnpx", ["convex", "env", "set", "BETTER_AUTH_SECRET=" + secret]);
 }
 
 (async () => {
