@@ -116,6 +116,17 @@ Enable the following scopes:
  - slack_id
 `);
 
+  if (convexUrl.endsWith(":3210")) {
+    await prompts([
+      {
+        type: "invisible",
+        name: "continue",
+        message:
+          "Open a new terminal, run pnpx convex dev, wait a bit, then press enter here",
+      },
+    ]);
+  }
+
   const { clientId, clientSecret } = await prompts([
     {
       type: "text",
@@ -132,17 +143,6 @@ Enable the following scopes:
   if (!clientId || !clientSecret) {
     console.error("Client ID and Client Secret are required");
     process.exit(1);
-  }
-
-  if (convexUrl.endsWith(":3210")) {
-    await prompts([
-      {
-        type: "invisible",
-        name: "continue",
-        message:
-          "Open a new terminal, run pnpx convex dev, wait a bit, then press enter here",
-      },
-    ]);
   }
 
   await exec("pnpx", [
