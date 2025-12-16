@@ -134,6 +134,17 @@ Enable the following scopes:
     process.exit(1);
   }
 
+  if (convexUrl.endsWith(":3210")) {
+    await prompts([
+      {
+        type: "invisible",
+        name: "continue",
+        message:
+          "Open a new terminal, run pnpx convex dev, wait a bit, then press enter here",
+      },
+    ]);
+  }
+
   await exec("pnpx", [
     "convex",
     "env",
