@@ -14,6 +14,15 @@ import {
 
 const RSS_FEED_URL = "https://ysws.hackclub.com/feed.xml";
 
+/**
+ * Renders the YSWS Catalog screen that displays RSS feed items.
+ *
+ * Fetches the feed from a fixed RSS URL on mount, shows a loading state while fetching,
+ * displays an error with a retry option if loading fails, and supports pull-to-refresh.
+ * Tapping an item opens its link in the system browser.
+ *
+ * @returns The rendered React element for the catalog screen.
+ */
 export default function YSWSCatalog() {
   const fetchFeed = useAction(api.ysws.fetchRSS);
   const [items, setItems] = useState<Array<{
