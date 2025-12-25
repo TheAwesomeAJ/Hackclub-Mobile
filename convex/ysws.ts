@@ -28,7 +28,7 @@ export const fetchData = action({
       })),
     ];
 
-    ctx.runMutation(internal.ysws.updateDb, { yswses: yswses });
+    await ctx.runMutation(internal.ysws.updateDb, { yswses: yswses });
   },
 });
 
