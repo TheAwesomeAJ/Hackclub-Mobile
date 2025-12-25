@@ -1,9 +1,35 @@
 import { v } from "convex/values";
 import { action, internalMutation } from "./_generated/server";
 import { yswsTable } from "./schema";
+import { YSWSesData } from "./types";
+import { internal } from "./_generated/api";
 
-export const fetch = action({
-  handler: async (ctx) => {},
+export const fetchData = action({
+  handler: async (ctx) => {
+    const yswsesRequest = await fetch("https://ysws.hackclub.com/api.json");
+    const yswsesData = (await yswsesRequest.json()) as YSWSesData;
+
+    const yswses = [
+      ...yswsesData.drafts.map((ysws) => ({
+        type: "drafts",
+        ...ysws,
+      })),
+      ...yswsesData.indefinite.map((ysws) => ({
+        type: "indefinite",
+        ...ysws,
+      })),
+      ...yswsesData.limitedTime.map((ysws) => ({
+        type: "limitedTime",
+        ...ysws,
+      })),
+      ...yswsesData.recentlyEnded.map((ysws) => ({
+        type: "recentlyEnded",
+        ...ysws,
+      })),
+    ];
+
+    ctx.runMutation(internal.ysws.updateDb, { yswses: yswses });
+  },
 });
 
 export const updateDb = internalMutation({
