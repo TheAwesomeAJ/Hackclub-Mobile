@@ -33,6 +33,10 @@ export default function YSWSCatalog() {
     if (url) Linking.openURL(url);
   };
 
+  useEffect(() => {
+    reload();
+  }, [reload]);
+
   if (items === null) {
     return (
       <View style={styles.center}>
