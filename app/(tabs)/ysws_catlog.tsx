@@ -73,9 +73,15 @@ export default function YSWSCatalog() {
             }}
           >
             <Text style={styles.title}>{item.name}</Text>
-            {/*<Text style={styles.date}>
-              {item.pubDate ? new Date(item.deadline || item.).toDateString() : ""}
-            </Text>*/}
+            {item.deadline && (
+              <Text style={styles.date}>
+                {item.status === "active" &&
+                  "Ends on " + new Date(item.deadline).toDateString()}
+                {item.status === "ended" &&
+                  "Ended on " + new Date(item.deadline).toDateString()}
+              </Text>
+            )}
+            {item.status === "draft" && <Text style={styles.date}>Draft</Text>}
             <Text style={styles.snippet} numberOfLines={3}>
               {item.description.length > 0
                 ? item.description
