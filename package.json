@@ -48,7 +48,7 @@
     "react-native-svg": "15.12.1",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.5.1",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
