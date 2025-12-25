@@ -1,27 +1,26 @@
-"use node";
 import { v } from "convex/values";
-import Parser from "rss-parser";
-import { action } from "./_generated/server";
+import { action, internalMutation } from "./_generated/server";
+import { yswsTable } from "./schema";
 
-const parser = new Parser();
+export const fetch = action({
+  handler: async (ctx) => {},
+});
 
-export const fetchRSS = action({
-  args: { url: v.string() },
-  returns: v.array(
-    v.object({
-      title: v.optional(v.string()),
-      link: v.optional(v.string()),
-      content: v.optional(v.string()),
-      pubDate: v.optional(v.string()),
-    })
-  ),
-  handler: async (_ctx, { url }) => {
-    const feed = await parser.parseURL(url);
-    return feed.items.map((item) => ({
-      title: item.title,
-      link: item.link,
-      content: item.contentSnippet || item.content,
-      pubDate: item.pubDate,
-    }));
+export const updateDb = internalMutation({
+  args: {
+    yswses: v.array(v.object(yswsTable)),
+  },
+  handler: async (ctx, args) => {
+    args.yswses.forEach(async (ysws) => {
+      const existing = await ctx.db
+        .query("yswses")
+        .withIndex("by_name", (q) => q.eq("name", ysws.name))
+        .collect();
+      if (existing.length > 0) {
+        ctx.db.patch(existing[0]._id, ysws);
+      } else {
+        await ctx.db.insert("yswses", ysws);
+      }
+    });
   },
 });
