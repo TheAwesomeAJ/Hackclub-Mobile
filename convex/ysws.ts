@@ -1,4 +1,4 @@
-import { v, Infer } from "convex/values";
+import { v } from "convex/values";
 import { action, internalMutation } from "./_generated/server";
 import { yswsTable } from "./schema";
 import { YSWSesData } from "./types";
