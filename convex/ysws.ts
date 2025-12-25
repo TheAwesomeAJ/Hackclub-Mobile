@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { action, internalMutation } from "./_generated/server";
+import { action, internalMutation, query } from "./_generated/server";
 import { yswsTable } from "./schema";
 import { YSWSesData } from "./types";
 import { internal } from "./_generated/api";
@@ -49,5 +49,12 @@ export const updateDb = internalMutation({
         await ctx.db.insert("yswses", ysws);
       }
     }
+  },
+});
+
+export const get = query({
+  handler: async (ctx) => {
+    const yswses = await ctx.db.query("yswses").collect();
+    return yswses;
   },
 });
