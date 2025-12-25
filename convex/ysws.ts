@@ -36,17 +36,18 @@ export const updateDb = internalMutation({
   args: {
     yswses: v.array(v.object(yswsTable)),
   },
+  returns: v.null(),
   handler: async (ctx, args) => {
-    args.yswses.forEach(async (ysws) => {
+    for (const ysws of args.yswses) {
       const existing = await ctx.db
         .query("yswses")
         .withIndex("by_name", (q) => q.eq("name", ysws.name))
-        .collect();
-      if (existing.length > 0) {
-        ctx.db.patch(existing[0]._id, ysws);
+        .first();
+      if (existing) {
+        await ctx.db.patch(existing._id, ysws);
       } else {
         await ctx.db.insert("yswses", ysws);
       }
-    });
+    }
   },
 });
