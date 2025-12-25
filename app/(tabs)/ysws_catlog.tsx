@@ -1,15 +1,15 @@
 import { api } from "@/convex/_generated/api";
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    Linking,
-    RefreshControl,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Linking,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const RSS_FEED_URL = "https://ysws.hackclub.com/feed.xml";
@@ -24,42 +24,16 @@ const RSS_FEED_URL = "https://ysws.hackclub.com/feed.xml";
  * @returns The rendered React element for the catalog screen.
  */
 export default function YSWSCatalog() {
-  const fetchFeed = useAction(api.ysws.fetchRSS);
-  const [items, setItems] = useState<Array<{
-    title?: string;
-    link?: string;
-    content?: string;
-    pubDate?: string;
-  }>>([]);
-  const [loading, setLoading] = useState(true);
+  const items = useQuery(api.ysws.get);
+  const reload = useAction(api.ysws.fetchData);
+
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const load = async () => {
-    try {
-      setError(null);
-      const data = await fetchFeed({ url: RSS_FEED_URL });
-      if (!data) throw new Error("No data returned from feed");
-      setItems(data);
-    } catch (e) {
-      console.error(e);
-      setError("Failed to load feed. Pull to retry.");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const openLink = (url?: string) => {
     if (url) Linking.openURL(url);
   };
 
-  if (loading) {
+  if (items === null) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#ec3750" />
@@ -71,20 +45,6 @@ export default function YSWSCatalog() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>YSWS Catalog</Text>
-      {error ? (
-        <View style={styles.center}>
-          <Text style={{ color: "#ec3750", marginBottom: 8 }}>{error}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              setLoading(true);
-              load();
-            }}
-            style={styles.retry}
-          >
-            <Text style={{ color: "white", fontWeight: "600" }}>Retry</Text>
-          </TouchableOpacity>
-        </View>
-      ) : null}
       <FlatList
         data={items}
         keyExtractor={(_, i) => i.toString()}
@@ -92,29 +52,35 @@ export default function YSWSCatalog() {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => {
+            onRefresh={async () => {
               setRefreshing(true);
-              load();
+              await reload();
+              setRefreshing(false);
             }}
           />
         }
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card} onPress={() => openLink(item.link)}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.date}>
-              {item.pubDate ? new Date(item.pubDate).toDateString() : ""}
-            </Text>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              if (item.website) {
+                openLink(item.website);
+              }
+            }}
+          >
+            <Text style={styles.title}>{item.name}</Text>
+            {/*<Text style={styles.date}>
+              {item.pubDate ? new Date(item.deadline || item.).toDateString() : ""}
+            </Text>*/}
             <Text style={styles.snippet} numberOfLines={3}>
-              {item.content}
+              {item.detailedDescription}
             </Text>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
-          !loading && !error ? (
-            <View style={styles.center}>
-              <Text>No feed items available.</Text>
-            </View>
-          ) : null
+          <View style={styles.center}>
+            <Text>No items available.</Text>
+          </View>
         }
       />
     </View>
