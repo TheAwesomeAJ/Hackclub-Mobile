@@ -11,19 +11,19 @@ export const fetchData = action({
 
     const yswses = [
       ...yswsesData.drafts.map((ysws) => ({
-        type: "drafts",
+        category: "drafts",
         ...ysws,
       })),
       ...yswsesData.indefinite.map((ysws) => ({
-        type: "indefinite",
+        category: "indefinite",
         ...ysws,
       })),
       ...yswsesData.limitedTime.map((ysws) => ({
-        type: "limitedTime",
+        category: "limitedTime",
         ...ysws,
       })),
       ...yswsesData.recentlyEnded.map((ysws) => ({
-        type: "recentlyEnded",
+        category: "recentlyEnded",
         ...ysws,
       })),
     ];
