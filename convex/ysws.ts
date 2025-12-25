@@ -1,4 +1,4 @@
-import { v } from "convex/values";
+import { v, Infer } from "convex/values";
 import { action, internalMutation } from "./_generated/server";
 import { yswsTable } from "./schema";
 import { YSWSesData } from "./types";
@@ -11,19 +11,19 @@ export const fetchData = action({
 
     const yswses = [
       ...yswsesData.drafts.map((ysws) => ({
-        category: "drafts",
+        category: "drafts" as const,
         ...ysws,
       })),
       ...yswsesData.indefinite.map((ysws) => ({
-        category: "indefinite",
+        category: "indefinite" as const,
         ...ysws,
       })),
       ...yswsesData.limitedTime.map((ysws) => ({
-        category: "limitedTime",
+        category: "limitedTime" as const,
         ...ysws,
       })),
       ...yswsesData.recentlyEnded.map((ysws) => ({
-        category: "recentlyEnded",
+        category: "recentlyEnded" as const,
         ...ysws,
       })),
     ];
