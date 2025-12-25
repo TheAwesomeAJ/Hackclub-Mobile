@@ -1,7 +1,7 @@
-import { defineTable } from "convex/server";
+import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export const tables = {
+export default defineSchema({
   yswses: defineTable({
     category: v.union(
       v.literal("limitedTime"),
@@ -27,4 +27,4 @@ export const tables = {
     details: v.optional(v.array(v.string())),
     requirements: v.optional(v.union(v.array(v.string()), v.string())),
   }),
-};
+});
