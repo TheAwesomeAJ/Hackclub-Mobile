@@ -73,7 +73,9 @@ export default function YSWSCatalog() {
               {item.pubDate ? new Date(item.deadline || item.).toDateString() : ""}
             </Text>*/}
             <Text style={styles.snippet} numberOfLines={3}>
-              {item.detailedDescription}
+              {item.description.length > 0
+                ? item.description
+                : item.detailedDescription}
             </Text>
           </TouchableOpacity>
         )}
