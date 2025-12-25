@@ -24,5 +24,5 @@ export const yswsTable = {
 };
 
 export default defineSchema({
-  yswses: defineTable(yswsTable),
+  yswses: defineTable(yswsTable).index("by_name", ["name"]),
 });
