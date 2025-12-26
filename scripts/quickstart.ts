@@ -1,11 +1,11 @@
 import { spawn } from "child_process";
-import prompts from "prompts";
-import fsPromises from "fs/promises";
+import { randomBytes } from "crypto";
+import dotenv from "dotenv";
 import fs from "fs";
+import fsPromises from "fs/promises";
 import path from "path";
 import { exit } from "process";
-import dotenv from "dotenv";
-import { randomBytes } from "crypto";
+import prompts from "prompts";
 
 const envPath = path.resolve(process.cwd(), ".env.local");
 let convexUrl = "";
@@ -20,6 +20,7 @@ async function confirm(text: string) {
     inactive: "Exit",
     active: "Continue",
   });
+
   if (!value) {
     console.log("Cancelled");
     process.exit(1);
@@ -32,11 +33,12 @@ async function exec(executable: string, args: string[]) {
   await confirm("Continue?");
 
   return new Promise<void>((resolve, reject) => {
-    const process = spawn(executable, args, {
+    const child = spawn(executable, args, {
       stdio: "inherit",
+      shell: true, // ✅ Required for Windows PATH resolution
     });
 
-    process.on("close", (code) => {
+    child.on("close", (code) => {
       if (code === 0) {
         resolve();
       } else {
@@ -44,7 +46,7 @@ async function exec(executable: string, args: string[]) {
       }
     });
 
-    process.on("error", (error) => {
+    child.on("error", (error) => {
       reject(error);
     });
   });
@@ -57,6 +59,7 @@ async function checkEnvs() {
       name: "value",
       message: "Environment variables already exist. Delete?",
     });
+
     if (value === undefined) exit(1);
     if (value) {
       await fsPromises.unlink(envPath);
@@ -69,10 +72,11 @@ async function convexSetup() {
 You have to use a cloud deployment
 Follow the prompts from the Convex CLI`);
 
-  await exec("pnpx", ["convex", "dev", "--until-success"]);
+  await exec("pnpm", ["dlx", "convex", "dev", "--until-success"]);
 
   const envVars = dotenv.parse(fs.readFileSync(envPath));
   convexUrl = envVars.EXPO_PUBLIC_CONVEX_URL;
+
   if (!convexUrl) {
     console.error("Failed to retrieve Convex URL from environment variables");
     process.exit(1);
@@ -92,7 +96,7 @@ async function addConvexSiteUrl() {
 
   if (!envVars.EXPO_PUBLIC_CONVEX_SITE_URL) {
     await fsPromises.appendFile(
-      path.resolve(process.cwd(), ".env.local"),
+      envPath,
       `EXPO_PUBLIC_CONVEX_SITE_URL=${convexSiteUrl}\n`,
     );
     console.log("Convex site URL added to .env.local");
@@ -103,7 +107,8 @@ async function authSetup() {
   console.log(`Step 2: Setting up authentication
 Go to https://auth.hackclub.com/developer/apps and create a new app.
 
-Use the redirect URI: ${convexSiteUrl}/api/auth/oauth2/callback/hackclub
+Use the redirect URI:
+${convexSiteUrl}/api/auth/oauth2/callback/hackclub
 
 Enable the following scopes:
  - openid
@@ -131,13 +136,16 @@ Enable the following scopes:
     process.exit(1);
   }
 
-  await exec("pnpx", [
+  await exec("pnpm", [
+    "dlx",
     "convex",
     "env",
     "set",
     "HACKCLUB_CLIENT_ID=" + clientId,
   ]);
-  await exec("pnpx", [
+
+  await exec("pnpm", [
+    "dlx",
     "convex",
     "env",
     "set",
@@ -148,7 +156,13 @@ Enable the following scopes:
 async function configureBetterAuthSecret() {
   const secret = randomBytes(32).toString("base64");
 
-  await exec("pnpx", ["convex", "env", "set", "BETTER_AUTH_SECRET=" + secret]);
+  await exec("pnpm", [
+    "dlx",
+    "convex",
+    "env",
+    "set",
+    "BETTER_AUTH_SECRET=" + secret,
+  ]);
 }
 
 (async () => {
