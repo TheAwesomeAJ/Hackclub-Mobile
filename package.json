@@ -20,7 +20,7 @@
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
     "@types/prompts": "^2.4.9",
-    "better-auth": "1.3.34",
+    "better-auth": "1.4.5",
     "convex": "^1.30.0",
     "expo": "~54.0.20",
     "expo-constants": "~18.0.10",
