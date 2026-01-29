@@ -10,14 +10,7 @@ import {
 } from "lucide-react-native";
 import { useColorScheme } from "react-native";
 
-/**
- * Render the app's bottom tab navigator configured for the Expo Router.
- *
- * Provides a themed Tabs container with custom tab styling, haptic tab buttons,
- * and the app's primary tab screens (Home, Hackatime, Events, YSWS, Toolbox placeholder, More).
- *
- * @returns The configured Tabs navigator element with themed styles and screen entries.
- */
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const themeColors = Colors[colorScheme || "dark"];
