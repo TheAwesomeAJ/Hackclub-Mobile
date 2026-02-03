@@ -1,10 +1,8 @@
-import { Stack } from "expo-router";
-import { ConvexReactClient } from "convex/react";
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { authClient } from "@/lib/auth-client";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useColorScheme } from "react-native";
 import { Colors } from "@/constants/colors";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 const convex = new ConvexReactClient(
   process.env.EXPO_PUBLIC_CONVEX_URL as string,
   {
@@ -17,7 +15,7 @@ export default function RootLayout() {
   const themeColors = Colors[colorScheme || "dark"];
 
   return (
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
+    <ConvexProvider client={convex}>
       <SafeAreaProvider>
         <Stack
           screenOptions={{
@@ -26,6 +24,6 @@ export default function RootLayout() {
           }}
         />
       </SafeAreaProvider>
-    </ConvexBetterAuthProvider>
+    </ConvexProvider>
   );
 }

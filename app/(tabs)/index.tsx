@@ -1,11 +1,6 @@
 import { api } from "@/convex/_generated/api";
 import { authClient } from "@/lib/auth-client";
-import {
-  Authenticated,
-  AuthLoading,
-  Unauthenticated,
-  useQuery,
-} from "convex/react";
+import { useQuery } from "convex/react";
 import { router } from "expo-router";
 
 import Header from "@/components/Header";
@@ -14,6 +9,7 @@ import { Button, View } from "react-native";
 export default function Index() {
 
   const user = useQuery(api.auth.getCurrentUser);
+  const session = authClient.useSession();
 
   return (
     <>
@@ -47,37 +43,42 @@ export default function Index() {
             </View>
           </View>
         </View>
-        <AuthLoading>
+        {session.isPending && (
           <Text>loading...</Text>
-        </AuthLoading>
-        <Unauthenticated>
-          <Text>Unauthenticated</Text>
-          <Button
-            title="Login"
-            onPress={() => {
-              authClient.signIn.oauth2({
-                providerId: "hackclub",
-                callbackURL: "/",
-              });
-            }}
-          />
-        </Unauthenticated>
-        <Authenticated>
-          <Text>Authenticated</Text>
-          {user && (
-            <Text>
-              {user.name} ({user.email} - {user.slackId})
-            </Text>
-          )}
+        )}
 
-          <Button title="Logout" onPress={() => authClient.signOut()} />
-          <View style={{ marginTop: 20 }}>
+        {!session.isPending && !session.data?.user && (
+          <>
+            <Text>Unauthenticated</Text>
             <Button
-              title="Go to Hackatime"
-              onPress={() => router.push("/hackatime")}
+              title="Login"
+              onPress={() => {
+                authClient.signIn.social({
+                  provider: "hackclub",
+                });
+              }}
             />
-          </View>
-        </Authenticated>
+          </>
+        )}
+
+        {!session.isPending && session.data?.user && (
+          <>
+            <Text>Authenticated</Text>
+            {user && (
+              <Text>
+                {user.name} ({user.email} - {user.slackId})
+              </Text>
+            )}
+
+            <Button title="Logout" onPress={() => authClient.signOut()} />
+            <View style={{ marginTop: 20 }}>
+              <Button
+                title="Go to Hackatime"
+                onPress={() => router.push("/hackatime")}
+              />
+            </View>
+          </>
+        )}
       </View>
     </>
   );

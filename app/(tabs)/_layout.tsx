@@ -54,7 +54,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ysws_catlog"
+        name="ysws_catalog"
         options={{
           title: "YSWS",
           tabBarIcon: ({ color }) => <LayoutGrid color={color} size={24} />,
