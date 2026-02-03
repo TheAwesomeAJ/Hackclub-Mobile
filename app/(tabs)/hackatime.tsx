@@ -586,18 +586,29 @@ export default function Index() {
     }
   }, [todayStats, weeklyData]);
 
-  if (!userInfo && !session.isPending) {
+  if (!session.data?.user && !session.isPending) {
     return (
       <View style={styles.container}>
         <View style={styles.centerContainer}>
           <Text style={styles.title}>Not logged in</Text>
           <Button
             title="Login"
-            onPress={() => {
-              authClient.signIn.oauth2({
-                providerId: "hackclub",
+              onPress={() => {
+              authClient.signIn.social({
+                provider: "hackclub",
                 callbackURL: "/hackatime",
               });
+            }}
+          />
+          <View style={{ height: 8 }} />
+          <Button
+            title="Refresh"
+            onPress={async () => {
+              await loadCachedData();
+              const idToUse = storedSlackId || userInfo?.slackId;
+              if (idToUse) {
+                fetchStats(idToUse);
+              }
             }}
           />
         </View>

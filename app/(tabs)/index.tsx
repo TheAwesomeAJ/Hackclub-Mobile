@@ -55,6 +55,7 @@ export default function Index() {
               onPress={() => {
                 authClient.signIn.social({
                   provider: "hackclub",
+                  callbackURL: "/",
                 });
               }}
             />
