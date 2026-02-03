@@ -12,9 +12,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import Svg, {
   Defs,
@@ -66,7 +65,7 @@ const BarChart: React.FC<BarChartProps> = ({ data, width, height }) => {
   return (
     <View
       style={{
-        backgroundColor: "#2a2139",
+        backgroundColor: "#000000",
         borderRadius: 16,
         padding: 10,
         marginTop: 16,
@@ -274,11 +273,6 @@ export default function Index() {
           const data: ApiResponse = await response.json();
           const hours = data.data.total_seconds / 3600;
           const roundedHours = Math.round(hours * 100) / 100;
-          const hoursInt = Math.floor(hours);
-          const minutes = Math.floor((hours - hoursInt) * 60);
-          const dayOfWeek = displayDate.toLocaleDateString("en-US", {
-            weekday: "short",
-          });
 
           weeklyData.push({
             date: displayDateStr,
@@ -516,20 +510,7 @@ export default function Index() {
     }
   };
 
-  const handleChangeId = () => {
-    setAllTimeStats(null);
-    setTodayStats(null);
-    setWeeklyData([]);
-    setMonthlyData([]);
-    setThreeMonthData([]);
-    setError(null);
-  };
 
-  const getFavoriteLanguage = (stats: StatsData | null) => {
-    if (!stats || !stats.languages.length) return "N/A";
-    const topLanguage = stats.languages.find((lang) => lang.total_seconds > 0);
-    return topLanguage ? topLanguage.name : "N/A";
-  };
 
   const getWeeklyChartData = () => {
     if (weeklyData.length === 0) {
@@ -553,16 +534,6 @@ export default function Index() {
     });
   };
 
-  const getMonthlyChartData = () => {
-    if (monthlyData.length === 0) {
-      return [];
-    }
-
-    return monthlyData.map((item) => ({
-      label: item.weekLabel,
-      value: item.hours,
-    }));
-  };
 
   const getThreeMonthChartData = () => {
     if (threeMonthData.length === 0) {
@@ -611,30 +582,33 @@ export default function Index() {
   // Log coding time
   useEffect(() => {
     if (todayStats && weeklyData.length > 0) {
-      const todaySeconds = todayStats.total_seconds;
-      const todayHours = Math.floor(todaySeconds / 3600);
-      const todayMinutes = Math.floor((todaySeconds % 3600) / 60);
 
-      const weekSeconds = weeklyData
-        .slice(-7)
-        .reduce((sum, d) => sum + d.hours * 3600, 0);
-      const weekHours = Math.floor(weekSeconds / 3600);
-      const weekMinutes = Math.floor((weekSeconds % 3600) / 60);
     }
   }, [todayStats, weeklyData]);
 
-  if (!userInfo && !session.isPending) {
+  if (!session.data?.user && !session.isPending) {
     return (
       <View style={styles.container}>
         <View style={styles.centerContainer}>
           <Text style={styles.title}>Not logged in</Text>
           <Button
             title="Login"
-            onPress={() => {
-              authClient.signIn.oauth2({
-                providerId: "hackclub",
+              onPress={() => {
+              authClient.signIn.social({
+                provider: "hackclub",
                 callbackURL: "/hackatime",
               });
+            }}
+          />
+          <View style={{ height: 8 }} />
+          <Button
+            title="Refresh"
+            onPress={async () => {
+              await loadCachedData();
+              const idToUse = storedSlackId || userInfo?.slackId;
+              if (idToUse) {
+                fetchStats(idToUse);
+              }
             }}
           />
         </View>
@@ -676,7 +650,7 @@ export default function Index() {
       >
         {/* Welcome Header */}
         <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeText}>welcome back,</Text>
+          <Text style={styles.welcomeText}>Welcome back,</Text>
           <Text
             style={styles.usernameText}
             numberOfLines={1}
@@ -769,21 +743,48 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2a2139",
+    backgroundColor: "#07070b",
   },
   scrollView: {
     flex: 1,
   },
   contentContainer: {
     padding: 16,
-    paddingTop: 60,
+    paddingTop: 88,
+  },
+  headerContainer: {
+    position: "absolute",
+    top: 16,
+    left: 16,
+    width: 72,
+    height: 72,
+    borderRadius: 18,
+    overflow: "hidden",
+    zIndex: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    elevation: 6,
+  },
+  headerBlur: {
+    position: "absolute",
+    width: "120%",
+    height: "120%",
+    top: "-10%",
+    left: "-10%",
+    opacity: 0.95,
+    transform: [{ scale: 1.1 }],
+  },
+  headerLogo: {
+    width: 40,
+    height: 40,
   },
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#2a2139",
+    backgroundColor: "#000000",
   },
   title: {
     fontSize: 20,
@@ -982,7 +983,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   textInput: {
-    backgroundColor: "#2a2139",
+    backgroundColor: "#000000",
     color: "#FFFFFF",
     paddingVertical: 14,
     paddingHorizontal: 16,
